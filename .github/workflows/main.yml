@@ -17,6 +17,10 @@ jobs:
           rm -rf "${{ github.workspace }}"
           mkdir -p "${{ github.workspace }}"
 
+      - uses: actions/checkout@v3
+        with:
+          path: ${{github.workspace}}
+
       - name: Checkout pico-sdk/master
         uses: actions/checkout@v2
         with:
@@ -30,7 +34,7 @@ jobs:
 
       - name: Say hello
         working-directory: ${{github.workspace}}
-        run:
+        run: |
             test ! -f hello.txt
             test ! -f main.o
             test ! -f main.i
@@ -41,14 +45,19 @@ jobs:
       - name: Compile
         shell: bash
         working-directory: ${{github.workspace}}
-        run:
+        run: |
+            sudo apt update
+            sudo apt install gcc-arm-none-eabi
+            which arm-none-eabi-cpp
             test ! -f firmware.elf
-            PICO_TOOLCHAIN_PATH=../pico-sdk make
+            export PICO_TOOLCHAIN_PATH=/usr
+            ls -al
+            make
             test -f firmware.elf
       - name: Clean
         shell: bash
         working-directory: ${{github.workspace}}
-        run:
+        run: |
             make clean
             test ! -f hello.txt
             test ! -f main.o
