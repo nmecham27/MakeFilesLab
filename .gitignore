@@ -1,4 +1,6 @@
 .vscode/
 **/build/
 hello.txt
-main.i
+*.i
+*.o
+*.elf

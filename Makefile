@@ -1,8 +1,15 @@
 CPP=$(PICO_TOOLCHAIN_PATH)/bin/arm-none-eabi-cpp.exe
 CC=$(PICO_TOOLCHAIN_PATH)/bin/arm-none-eabi-gcc.exe
 AS=$(PICO_TOOLCHAIN_PATH)/bin/arm-none-eabi-as.exe
+LD=$(PICO_TOOLCHAIN_PATH)/bin/arm-none-eabi-ld
 
-main.o : main.s
+SRC=main.c second.c
+OBJS=$(patsubst %.c,%.o,$(SRC))
+
+firmware.elf: $(OBJS)
+	$(LD) -o $@ $^
+
+%.o : %.s
 	$(AS) $< -o $@
 
 %.s : %.i
