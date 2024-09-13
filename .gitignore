@@ -1,0 +1,6 @@
+.vscode/
+**/build/
+hello.txt
+*.i
+*.o
+*.elf
